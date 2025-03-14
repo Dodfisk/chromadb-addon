@@ -1,0 +1,105 @@
+/* Custom scrollbar for log output */
+#log-output::-webkit-scrollbar {
+    width: 8px;
+}
+
+#log-output::-webkit-scrollbar-track {
+    background: #1a1a1a;
+    border-radius: 4px;
+}
+
+#log-output::-webkit-scrollbar-thumb {
+    background: #4a5568;
+    border-radius: 4px;
+}
+
+#log-output::-webkit-scrollbar-thumb:hover {
+    background: #718096;
+}
+
+/* Smooth transitions */
+.status-badge {
+    transition: all 0.3s ease;
+}
+
+/* Animation for refresh button */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.refresh-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Custom styles for stats cards */
+.stats-card {
+    transition: transform 0.2s ease;
+}
+
+.stats-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Log entry styling */
+.log-entry {
+    padding: 4px 8px;
+    border-bottom: 1px solid #2d3748;
+}
+
+.log-entry:last-child {
+    border-bottom: none;
+}
+
+.log-entry.error {
+    color: #f56565;
+}
+
+.log-entry.warning {
+    color: #ed8936;
+}
+
+.log-entry.info {
+    color: #4299e1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .stats-card {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Loading indicator */
+.loading {
+    position: relative;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.5rem;
+}
+
+/* Custom focus styles */
+button:focus, 
+input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+}
