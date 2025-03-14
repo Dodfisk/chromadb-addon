@@ -1,0 +1,39 @@
+#!/usr/bin/with-contenv bashio
+# ==============================================================================
+# Start ChromaDB service
+# ==============================================================================
+
+# Get config values
+declare log_level
+declare persistence
+declare data_path
+
+# Get config values
+log_level=$(bashio::config 'log_level')
+persistence=$(bashio::config 'persistence')
+data_path=$(bashio::config 'data_path')
+
+bashio::log.info "Starting ChromaDB..."
+
+# Create data directory if it doesn't exist
+if bashio::var.true "${persistence}"; then
+    bashio::log.info "Setting up persistent storage at ${data_path}"
+    mkdir -p "${data_path}"
+fi
+
+# Set up environment variables for ChromaDB
+export CHROMA_SERVER_HOST="0.0.0.0"
+export CHROMA_SERVER_PORT="8000"
+export CHROMA_SERVER_LOG_LEVEL="${log_level}"
+
+if bashio::var.true "${persistence}"; then
+    export CHROMA_PERSISTENCE_DIRECTORY="${data_path}"
+fi
+
+# Start ChromaDB server using uvicorn
+exec uvicorn chromadb.app:app \
+    --host 0.0.0.0 \
+    --port 8000 \
+    --log-level "${log_level}" \
+    --proxy-headers \
+    --forwarded-allow-ips "*"
