@@ -1,24 +1,39 @@
 #!/usr/bin/with-contenv bashio
 # ==============================================================================
 # Start ChromaDB service
+# s6-overlay docs: https://github.com/just-containers/s6-overlay
 # ==============================================================================
 
-# Get config values
+# Import Home Assistant add-on helpers
+source /usr/lib/hassio-addons/base.sh
+
+# Declare variables
 declare log_level
 declare persistence
 declare data_path
 
 # Get config values
-log_level=$(bashio::config 'log_level')
-persistence=$(bashio::config 'persistence')
-data_path=$(bashio::config 'data_path')
+if ! log_level=$(bashio::config 'log_level'); then
+    bashio::exit.nok "Failed to get log_level configuration"
+fi
 
+if ! persistence=$(bashio::config 'persistence'); then
+    bashio::exit.nok "Failed to get persistence configuration"
+fi
+
+if ! data_path=$(bashio::config 'data_path'); then
+    bashio::exit.nok "Failed to get data_path configuration"
+fi
+
+# Log startup message
 bashio::log.info "Starting ChromaDB..."
 
-# Create data directory if it doesn't exist
+# Create data directory if persistence is enabled
 if bashio::var.true "${persistence}"; then
     bashio::log.info "Setting up persistent storage at ${data_path}"
-    mkdir -p "${data_path}"
+    if ! mkdir -p "${data_path}"; then
+        bashio::exit.nok "Failed to create data directory: ${data_path}"
+    fi
 fi
 
 # Set up environment variables for ChromaDB
@@ -30,8 +45,12 @@ if bashio::var.true "${persistence}"; then
     export CHROMA_PERSISTENCE_DIRECTORY="${data_path}"
 fi
 
-# Start ChromaDB server using uvicorn
-exec uvicorn chromadb.app:app \
+# Start ChromaDB server using uvicorn with proper error handling
+bashio::log.info "Starting ChromaDB server..."
+
+# Use exec to replace shell with uvicorn process
+# This ensures proper signal handling by s6-overlay
+exec s6-setuidgid abc uvicorn chromadb.app:app \
     --host 0.0.0.0 \
     --port 8000 \
     --log-level "${log_level}" \
