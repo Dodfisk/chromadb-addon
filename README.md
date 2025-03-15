@@ -1,2 +1,2 @@
-# blackboxai-1741996774940
+# chromadb-addon
 Built by https://www.blackbox.ai
