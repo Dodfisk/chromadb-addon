@@ -23,10 +23,11 @@ RUN pip3 install --no-cache-dir \
 
 # Copy root filesystem
 COPY rootfs /
+COPY run.sh /
 
 # Make scripts executable
 RUN chmod a+x /etc/services.d/chroma/* \
-    && chmod a+x /usr/share/chromadb/run.sh
+    && chmod a+x /run.sh
 
 # Set working directory
 WORKDIR /data
@@ -62,3 +63,12 @@ LABEL \
     org.opencontainers.image.created=${BUILD_DATE} \
     org.opencontainers.image.revision=${BUILD_REF} \
     org.opencontainers.image.version=${BUILD_VERSION}
+
+# Set S6 wait time
+ENV S6_CMD_WAIT_FOR_SERVICES=1 \
+    S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0 \
+    S6_SERVICES_GRACETIME=0
+
+# Entrypoint
+ENTRYPOINT ["/init"]
+CMD []
