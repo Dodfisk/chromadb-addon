@@ -3,7 +3,7 @@ version: "1.0.0"
 slug: chroma-addon
 init: true
 description: "ChromaDB vector database add-on for Home Assistant"
-url: "https://github.com/DeliciousHouse/chromadb-addon"
+url: "https://github.com/Dodfisk/chromadb-addon"
 arch:
   - aarch64
   - amd64
