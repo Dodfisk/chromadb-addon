@@ -30,7 +30,7 @@ This add-on provides a vector database service that allows you to store and quer
 
 1. Add our repository to your Home Assistant instance:
    ```yaml
-   - Add-on Store > ⋮ > Repositories > https://github.com/DeliciousHouse/chromadb-addon
+   - Add-on Store > ⋮ > Repositories > https://github.com/Dodfisk/chromadb-addon
    ```
 
 2. Find the "Vector Store" add-on in the Add-on Store
