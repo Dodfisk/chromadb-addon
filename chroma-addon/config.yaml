@@ -18,6 +18,7 @@ panel_icon: mdi:database
 panel_title: ChromaDB
 ports:
   8000/tcp: 8000
+image: ghcr.io/chroma-core/chroma:1.0.8
 ports_description:
   8000/tcp: ChromaDB API port
 map:
