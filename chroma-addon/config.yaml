@@ -1,5 +1,5 @@
 name: ChromaDB
-version: "1.0.0"
+version: "1.0.8"
 slug: chroma-addon
 init: true
 description: "ChromaDB vector database add-on for Home Assistant"
